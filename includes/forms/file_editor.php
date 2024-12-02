@@ -181,7 +181,7 @@ EOL;
                                         ?>
                                         <div class="col">
                                             <?php
-                                                if (CURRENT_USER_LEVEL != 0 || get_option('clients_can_set_categories') == '1' ) {
+                                                if (CURRENT_USER_LEVEL != 0) {
                                                     $generate_categories_options = generate_categories_options( $get_categories['arranged'], 0, $file->categories);
                                             ?>
                                                     <div class="categories">
@@ -207,7 +207,6 @@ EOL;
                                                 <?php
                                                     $ignore = [];
                                                     if (CURRENT_USER_LEVEL == 0) {
-                                                        $see_public_folders = get_option('clients_files_list_include_public');
                                                         $statement = $dbh->prepare("SELECT * FROM " . TABLE_FOLDERS);
                                                         $statement->execute();
                                                         if ($statement->rowCount() > 0) {
@@ -216,9 +215,9 @@ EOL;
                                                                 if ($folder_row['user_id'] == CURRENT_USER_ID) {
                                                                     continue;
                                                                 }
-                                                                if ($see_public_folders == '1' && $folder_row['public'] != 1) {
+
                                                                     $ignore[] = $folder_row['id'];
-                                                                }
+
                                                             }
                                                         }
                                                     }
@@ -293,9 +292,7 @@ EOL;
                                                         'copy-from' => 'hid_checkbox_'.$i,
                                                     ],
                                                 ];
-                                            }
 
-                                            if (CURRENT_USER_LEVEL != 0 || get_option('clients_can_set_categories') == '1') {
                                                 // Categories
                                                 $copy_buttons['categories'] = [
                                                     'label' => __('Selected categories','cftp_admin'),
@@ -305,9 +302,7 @@ EOL;
                                                         'target' => 'categories_'.$file->id,
                                                     ],
                                                 ];
-                                            }
 
-                                            if (CURRENT_USER_LEVEL != 0) {
                                                 // Folders
                                                 $copy_buttons['folder'] = [
                                                     'label' => __('Selected folder','cftp_admin'),
